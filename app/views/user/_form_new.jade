@@ -1,0 +1,20 @@
+if err 
+	label Nombre Completo
+	input(name='user[name]',type='text',required,value='#{user.name}')
+	label Nombre de usuario
+	input(name='user[username]',type='text',required,value="#{user.username}")
+	label Email
+	input(name='user[email]',type='email',required,value="#{user.email}")
+	label Contrasenia
+	input(name='user[password]',type='password',required,value="#{user.password}")
+else
+	label Nombre Completo
+	input(name='user[name]',type='text',required,placeholder="Franco Gomez")
+	label Nombre de usuario
+	input(name='user[username]',type='text',required,placeholder="fgomez")
+	label Email
+	input(name='user[email]',type='email',required,placeholder="fgomez@gmail.com")
+	label Contrasenia
+	input(name='user[password]',type='password',required,placeholder="franGomezDel85")
+br
+a(href='/') Cancelar

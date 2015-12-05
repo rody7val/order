@@ -1,0 +1,13 @@
+//- signup_form.jade
+extends ../layout.jade
+block title
+	title Editar
+block content
+	if err
+		#err_use.alert-danger
+			ul
+			each val, index in err
+				li= index + ': ' + val
+	form#signup(action='/user/#{user._id}/?_method=put', method='post')
+		include _form_edit.jade
+		input.btn.btn-success(type='submit', value='Editar')

@@ -1,0 +1,36 @@
+//- show_user.jade
+extends ../layout.jade
+block title
+	title Ususario
+block content
+	#user.container
+		if user
+			h2 #{user.name}
+				h3 (#{user.username})
+			p #{user.email}
+				if user.active
+					p.alert-success Usuario Activo
+				else
+					p.alert-danger Usuario Pendiente Moderacion
+			p Usuario desde #{user.created}
+		else
+			li There are no values
+		if session.user && user._id == session.user._id
+			a.btn.btn-primary(href="/user/#{user._id}/edit/",style="margin:5px") Editar perfil
+			form(
+			method='post'
+			action='/user/#{user._id}/?_method=delete'
+			style='display:inline-block')
+				button.btn.btn-danger(
+				type='submit'
+				onClick="return confirm('Borrar Usuario?')"
+				) Borrar mi cuenta
+		if session.user && session.user.active && user.active != true
+			form(
+			method='post'
+			action='/user/#{user._id}/active'
+			style='display:inline-block')
+				button.btn.btn-success(
+				type='submit'
+				onClick="return confirm('Activar Usuario?')"
+				) Activar

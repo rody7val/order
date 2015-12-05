@@ -1,0 +1,56 @@
+//- show_user.jade
+extends ../layout.jade
+block title
+	title Usuarios
+block content
+	h2 Listado de usuarios
+	#user.container
+		table#user_table.table.table-hover
+			thead
+				tr
+					th Nombre
+					th Email
+					th Usuario
+					th Creado el
+					if session.user
+						th.text-center Acciones
+			if users
+				tbody
+				each val, index in users
+					tr
+						td: a(href='/user/#{val._id}') #{val.name}
+						td #{val.email}
+						td #{val.username}
+						//- td #{val.created}
+						td #{moment.unix(val.created / 1000 | 0).lang('es').format('D MMM YYYY / HH:mm')} hs
+							if session.user
+								td.text-center
+									if val._id == session.user._id
+										span
+											//-editar
+											a.btn.btn-primary(
+											href='/user/#{val._id}/edit'
+											style="margin:5px"
+											) Editar
+											//-borrar
+											form(
+											method='post'
+											action='/user/#{val._id}/?_method=delete'
+											style='display:inline-block')
+												button.btn.btn-danger(
+												type='submit'
+												onClick="return confirm('Borrar Usuario?')"
+												) Borrar
+									if session.user.active && val.active != true
+										//-activar
+										span
+											form(
+											method='post'
+											action='/user/#{val._id}/active'
+											style='display:inline-block;margin:5px')
+												button.btn.btn-success(
+												type='submit'
+												onClick="return confirm('Activar Usuario?')"
+												) Activar
+			else
+				tr: td: p No Hay Usuarios Registrados

@@ -1,0 +1,40 @@
+//- layout.jade
+doctype html
+html(lang='en')
+  head
+    block title
+      title Default title
+    link(href='/css/bootstrap.min.css', rel='stylesheet')
+    link(href='/css/main.css', rel='stylesheet')
+    if session.user
+      script(type='text/javascript').
+        var token = '#{session.user.token}';
+    else
+      script(type='text/javascript').
+        var token = null;
+    script(src='/js/jquery.min.js')
+    script(src='/js/bootstrap.min.js')
+    script(src='/js/main.js')
+    script(src='/js/spin.min.js')
+    script(src='/js/moment-with-locales.min.js')
+  body
+    div#load
+      div#wrap
+        header
+          nav.navbar.navbar-fixed-top
+            div.navbar-header.pull-left
+              a.navbar-brand(href='/') InsuMax
+              a.navbar-brand(href='/user') Usuarios
+            div.navbar-header.pull-right
+              if session.user
+                span#user_me.navbar-brand
+                  a(href="/user/#{session.user._id}") #{session.user.username}
+                span.navbar-brand
+                  a#logout(href='/logout') Logout
+              else
+                span.navbar-brand
+                  a#logoin(href='/login') Login
+                span.navbar-brand
+                  a#logoin(href='/user/signup') Signup
+        #content.container
+          block content

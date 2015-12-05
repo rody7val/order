@@ -1,0 +1,13 @@
+//- signup_form.jade
+extends ../layout.jade
+block title
+	title Signup
+block content
+	if err
+		#err_use.alert-danger
+			ul
+			each val, index in err
+				li= index + ': ' + val
+	form#signup(action='/user', method='post')
+		include _form_new.jade
+		input.btn.btn-success(type='submit', value='Crear mi nueva cuenta!')

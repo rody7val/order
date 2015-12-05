@@ -1,0 +1,14 @@
+//- login_form.jade
+extends ../layout.jade
+block title
+  title Login
+block content
+  if err
+    #err_login.alert-danger
+      p #{err}
+  p No tienes una cuenta? 
+    a(href='/user/signup') Registrate
+  form#login(action="/login", method="post")
+    include _form_login.jade
+    a(href='/') Cancelar
+    input.bt.btn-success(type='submit', value='Enviar')

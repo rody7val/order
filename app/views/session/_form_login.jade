@@ -1,0 +1,32 @@
+if !user
+	label Usuario
+	input(
+	  type='text'
+	  name='username'
+	  required
+	  autofocus
+	  placeholder='username'
+	)
+	label Contrasenia
+	input(
+	  type='password'
+	  name='password'
+	  required
+	  placeholder='password'
+	)
+else
+	label Usuario
+	input(
+	  type='text'
+	  name='username'
+	  required
+	  value='#{user.username}'
+	)
+	label Contrasenia
+	input(
+	  type='password'
+	  name='password'
+	  required
+	  value='#{user.pass}'
+	)
+br
