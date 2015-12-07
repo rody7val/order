@@ -1,11 +1,7 @@
 var models = require('../models/models');
-var jsonwebtoken = require('jsonwebtoken');
-var config = require('../../config');
-var secretKey = config.secretKey;
-var jade = require('jade');
 
 
-// Cargar parametro :userid
+// Cargar parametro :userId
 exports.load = function(req, res, next, userId){
 
   models.User.findOne({_id: userId}, function(err, user){
@@ -70,7 +66,7 @@ exports.create = function(req, res){
 
 }
 
-// Mostrar Usuario :id
+// Mostrar Usuario
 exports.show = function(req, res){
 
   res.render('user/show_user.jade', {
@@ -80,7 +76,7 @@ exports.show = function(req, res){
 
 }
 
-// Formulario editar Usuario :id
+// Formulario editar Usuario
 exports.edit = function(req, res){
 
   var user = req.user;
@@ -95,7 +91,7 @@ exports.edit = function(req, res){
 
 }
 
-// Editar Usuario :id en la BD
+// Editar Usuario en la BD
 exports.update = function(req, res, next){
   
   if (req.session.user._id != req.user._id) {res.redirect('/'); return}
@@ -124,7 +120,7 @@ exports.update = function(req, res, next){
 
 }
 
-// Borrar Usuario :id en la BD
+// Borrar Usuario en la BD
 exports.delete = function(req, res, next){
 
   var user = req.user;
@@ -142,7 +138,7 @@ exports.delete = function(req, res, next){
 
 }
 
-// Activar Usuario :id en la BD
+// Activar Usuario en la BD
 exports.active = function(req, res, next){
 
   var user = req.user;

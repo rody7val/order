@@ -1,4 +1,5 @@
 var express = require("express");
+var favicon = require('serve-favicon');
 var bodyParser = require("body-parser");
 var cookieParser = require('cookie-parser');
 var session = require('express-session');
@@ -15,6 +16,7 @@ var app = express();
 app.use(cors());
 app.use(morgan('dev'));
 
+app.use(favicon(__dirname + '/public/favicon.ico'));
 app.set('views', path.join(__dirname, 'app/views'));
 app.set('view engine', 'jade');
 
@@ -29,7 +31,7 @@ app.use(session({
 app.use(methodOverride('_method'));
 app.use(express.static(path.join(__dirname, 'public')));
 
-// // helper dinamico:
+// helper dinamico
 app.use(function(req, res, next){
     // guardar path en session.redir para despues de login
     if(!req.path.match(/\/login|\/logout/)){
@@ -38,10 +40,8 @@ app.use(function(req, res, next){
 
     //auto-logout
     var time = Number( new Date().getTime() );
-    var timeOut = 4200; // 2 min
+    var timeOut = 4200; // 120 == 2 minutos
     if (req.session.contador && req.session.user) {
-        console.log(req.session.user)
-        //1000 es un seg
         if ((time - req.session.contador) > timeOut*1000) {
             delete req.session.user;
             res.redirect('/login');
@@ -49,10 +49,11 @@ app.use(function(req, res, next){
     }
 
     req.session.contador = time;
-    req.session.cart = models.Cart;
+    req.session.cart = models.Cart; //cart
 
     // hacer visible req.session en las vistas
     res.locals.session = req.session;
+    console.log(req.session)
     next();
 })
 

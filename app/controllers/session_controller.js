@@ -21,18 +21,18 @@ exports.create = function(req, res){
   models.User.findOne({
       username: req.body.username 
   }).select('name username password active').exec(function (err, user) {
-    // user not found
+    // usuario no encontrado
     if (err) {
       res.render('session/login.jade', {
         session: res.locals.session,
-        err: "User not found",
+        err: "Usuario no encontrado",
         user: {
           username: req.body.username,
           pass: req.body.password
         }
       });
     }
-    // incorrect username
+    // username incorrecto
     if (!user) {
       res.render('session/login.jade', {
         session: res.locals.session,
@@ -65,7 +65,7 @@ exports.create = function(req, res){
           active: user.active
         };
 
-        console.log('\n**ACTIVIDAD DEl USUARIO: '+user.name);
+        console.log('\n**Login:\n**ACTIVIDAD DEl USUARIO: '+user.name);
         console.log('**USER ID: '+user._id);
         console.log('**TIME: '+Date.now());
         console.log('**REST PATH: '+req.path+'\n');
@@ -89,7 +89,7 @@ exports.loginRequired = function(req, res, next){
       delete req.session.user;
       res.status(403).json({success: false, message: "Mas de 24 min sin actividad. Iniciar session."});
     } else {
-      console.log('\n**ACTIVIDAD DEl USUARIO: '+decoded.username);
+      console.log('\n**LoginRequired:\n**ACTIVIDAD DEl USUARIO: '+decoded.username);
       console.log('**USER ID: '+decoded._id);
       console.log('**TIME: '+Date.now());
       console.log('**REST PATH: '+req.path+'\n');

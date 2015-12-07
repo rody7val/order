@@ -1,7 +1,7 @@
 var mongoose = require("mongoose");
 
 // Importar tablas
-var Session = require('./session');
+var Cart = require('./cart');
 var User = require('./user');
 
 // Conectar con MongoDB usando Mongoose.
@@ -11,7 +11,7 @@ mongoose.connect('mongodb://localhost/sc', function (err) {
     } else {
         // Exportar tablas
         console.log("Connected to database");
-		exports.Session = Session;
+        exports.Cart = Cart;
 		exports.User = User;
     }
 });

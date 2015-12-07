@@ -22,7 +22,7 @@ block content
 						td #{val.email}
 						td #{val.username}
 						//- td #{val.created}
-						td #{moment.unix(val.created / 1000 | 0).lang('es').format('D MMM YYYY / HH:mm')} hs
+						td #{moment.unix(val.created / 1000 | 0).locale('es').format('D MMM YYYY / HH:mm')} hs
 							if session.user
 								td.text-center
 									if val._id == session.user._id

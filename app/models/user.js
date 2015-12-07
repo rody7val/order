@@ -6,8 +6,7 @@ var jsonwebtoken = require('jsonwebtoken');
 var secretKey = require('../../config').secretKey;
 
 
-// Creating user schema.
-// @type {*|Schema}
+// user schema
 var UserSchema = new Schema({
     name: {type: String, required: true},
     username: {type: String, required: true, unique: true},
@@ -17,10 +16,10 @@ var UserSchema = new Schema({
     created: {type: Date, default: Date.now}
 });
 
-// Apply the uniqueValidator plugin to userSchema.
+// aplicar uniqueValidator plugin a UserSchema.
 UserSchema.plugin(uniqueValidator);
 
-// Encrypting the user password.
+// cifrar user password.
 UserSchema.pre('save', function (next) {
     var user = this;
     if (!user.isModified('password')) return next();
@@ -31,7 +30,7 @@ UserSchema.pre('save', function (next) {
     });
 });
 
-//methods
+// metodos
 UserSchema.methods.comparePassword = function (password) {
     var user = this;
     return bcrypt.compareSync(password, user.password);
@@ -43,10 +42,10 @@ UserSchema.methods.createToken = function () {
         name: user.name,
         username: user.username
     }, secretKey, {
-        expirtsInMinute: 200 // 24 min
+        expirtsInMinute: 1440 // 1440 == 1 dia
     });
     return token;
 };
 
-// export model User
+// exortar modelo User
 module.exports = mongoose.model('User', UserSchema);
