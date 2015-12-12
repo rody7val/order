@@ -36,19 +36,11 @@ html(lang='en')
                   a#logoin(href='/login') Login
                 span.navbar-brand
                   a#logoin(href='/user/signup') Signup
+              //- myCart
               if session.cart
-                span.navbar-brand
-                  a#cart.btn.btn-primary.navbar-btn(
-                    href='#'
-                    data-html='true'
-                    data-toggle='popover'
-                    data-placement='bottom'
-                    data-trigger='focus'
-                    data-content='<div id="cart_content">#{session.cart.items.length}</div>'
-                  )
-                    span#item #{session.cart.items.length}
-                    span.glyphicon.glyphicon-shopping-cart(aria-hidden='true')
+                include cart/index.jade
               else
-                p.alert-danger Error cart!
+                span.navbar-brand
+                  p.alert-danger Error cart!
         #content.container
           block content
