@@ -1,0 +1,37 @@
+- var category = item.category || null
+if err 
+	label Nombre
+	input(name='item[name]',type='text',required,value='#{item.name}')
+	label Descripcion
+	textarea(name='item[desc]',type='text',required,value="#{item.desc}")
+	label Precio
+	input(name='item[price]',type='text',required,value="#{item.price}")
+	label Categoria
+	select(name="item[category]")
+		if !category || category == ''
+			opction(value='',selected,disabled) Seleccione una opcion
+			opction(value='cocina') Cocina
+			opction(value='baño') Baño
+		else
+			opction(value='',disabled) Seleccione una opcion
+			case category
+				when 'cocina'
+					opction(value='cocina',selected) Cocina
+				when 'baño'
+					opction(value='baño',selected) Baño
+	input(name='item[img]',type='file')
+else
+	label Nombre
+	input(name='item[name]',type='text',required,placeholder="Lavandina 5l Ropa blanca")
+	label Descripcion
+	textarea(name='item[desc]',type='text',required,placeholder="descripcion corta o larga..")
+	label Precio
+	input(name='item[price]',type='text',required,placeholder="25.5")
+	label Categoria
+	select(name="item[category]")
+		option(value='',selected,disabled) Seleccione una opcion
+		option(value='cocina') Cocina
+		option(value='baño') Baño
+	input(name='item[img]',type='file')
+br
+a(href='/') Cancelar

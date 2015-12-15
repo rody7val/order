@@ -53,7 +53,7 @@ app.use(function(req, res, next){
 
     // hacer visible req.session en las vistas
     res.locals.session = req.session;
-    console.log(req.session.cart.items);
+    console.log(req.session);
     next();
 })
 

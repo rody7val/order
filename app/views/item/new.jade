@@ -1,0 +1,13 @@
+//- signup_form.jade
+extends ../layout.jade
+block title
+	title Cargar nuevo producto
+block content
+	if err
+		#err_item.alert-danger
+			ul
+			each val, index in err
+				li= index + ': ' + val
+	form#item(action='/item', method='post', enctype="multipart/form-data")
+		include _form_new.jade
+		input.btn.btn-success(type='submit', value='Cargar nuevo producto')

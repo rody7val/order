@@ -14,7 +14,7 @@ block content
 					th Creado el
 					if session.user
 						th.text-center Acciones
-			if users
+			if users.length
 				tbody
 				each val, index in users
 					tr

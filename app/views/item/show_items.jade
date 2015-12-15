@@ -1,0 +1,35 @@
+//- show_user.jade
+extends ../layout.jade
+block title
+	title Productos
+block content
+	h2 Listado de productos
+	#item_content.container
+		div.row
+			if items.length
+				each val, index in items
+					div.col-sm-6.col-md-4
+						div.thumbnail
+							img.img-responsive(
+							src='#{val.imgPath}'
+							alt='#{val.name}')
+							div.caption
+								h2 #{val.name}
+								a.btn.btn-primary(
+								href='/cart/add_item?item=#{val._id}') Añadir al carro
+								if session.user
+									span
+										//-borrar
+										form(
+										method='post'
+										action='/item/#{val._id}/?_method=delete'
+										style='margin:5px;display:inline-block')
+											button.btn.btn-danger(
+											type='submit'
+											onClick="return confirm('Borrar articulo?')"
+											) Borrar
+			else
+				p Aun no hay productos disponibles.
+			if session.user
+				a.btn.btn-primary(
+				href='/item/new') Cargar nuevo producto

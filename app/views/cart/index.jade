@@ -1,7 +1,7 @@
 if session.cart.items.length
 	- var content = '<table><tbody>'
 	each val, index in session.cart.items
-		- content += '<tr><td><strong class="item_name">'+ ((val.name.length>12)?val.name.substring(0,12)+'...':val.name) +'</strong></td><td><span class="item_price">$'+ val.price +'x</span></td><td><input class="item_qty" value="'+ val.qty +'"></td><td><a class="item_close" href="#"> X </a></td></tr>'
+		- content += '<tr><td><strong class="item_name">'+ ((val.name.length>12)?val.name.substring(0,12)+'...':val.name) +'</strong></td><td><span class="item_price">$'+ val.price +'x</span></td><td><input class="item_qty" value="'+ val.qty +'"></td><td><a class="item_close" href="/cart/remove_item?item='+val._id+'"> X </a></td></tr>'
 	- content += '</tbody></table>'
 else
 	- content = '<p class="text-center">Carro vacio</p>'

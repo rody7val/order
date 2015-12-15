@@ -33,7 +33,7 @@ exports.index = function (req, res, next) {
 
 // Formulario nuevo Usuario
 exports.new = function(req, res){
-
+  
   if (req.session.user) {res.redirect(req.session.redir||'/'); return};
 
   var user = models.User;
