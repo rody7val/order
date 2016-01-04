@@ -8,7 +8,7 @@ var ItemSchema = new Schema({
     price: Number,
     category: {type: String, index: true, required: true},
     img: {type: Buffer, contentType: String},
-    imgPath: {type: String, default: '/img/default.png'},
+    imgPath: {type: String, default: '/img/default-item.png'},
     userId: {type: String, idex: true},
     created: {type: Date, default: Date.now, index: true}
 });

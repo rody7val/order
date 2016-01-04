@@ -1,0 +1,27 @@
+span.navbar-brand
+	a#button_cart.btn.btn-primary.navbar-btn(href='#', onclick='view_hide("cart")')
+		span#item #{session.cart.items.length} 
+		span.glyphicon.glyphicon-shopping-cart(aria-hidden='true')
+	#cart.popover.fade.bottom.in
+		div.arrow(style='left:50%')
+		table
+			if session.cart.items.length
+				each val, index in session.cart.items
+					tr(tr-hover='close')
+						td: strong.item_name #{(val.name.length>13)?val.name.substring(0,13)+'..':val.name}
+						td: span.item_price $ #{val.price}
+						td: strong.por x
+						td: input.item_qty(value='#{val.qty}')
+						td.td_close: a.item_close.alert-danger.text-center(
+						href='/cart/remove_item?item='+val._id
+						id='#{index}'
+						) X
+				table
+					tr 
+						td.text-right
+							p: strong Total: 
+						td.text-left
+							p.item_price $ #{session.cart.total}
+			else
+				tr
+					td: p.text-center Carro vacio.

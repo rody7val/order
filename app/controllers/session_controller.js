@@ -20,7 +20,7 @@ exports.create = function(req, res){
 
   models.User.findOne({
       username: req.body.username 
-  }).select('name username password active').exec(function (err, user) {
+  }).select('name username password active admin imgPath email').exec(function (err, user) {
     // usuario no encontrado
     if (err) {
       res.render('session/login.jade', {
@@ -36,7 +36,7 @@ exports.create = function(req, res){
     if (!user) {
       res.render('session/login.jade', {
         session: res.locals.session,
-        err: "User doenst exist",
+        err: "Usuario no existe",
         user: {
           username: req.body.username,
           pass: req.body.password
@@ -48,23 +48,24 @@ exports.create = function(req, res){
       if (!validPassword) {
         res.render('session/login.jade', {
           session: res.locals.session,
-          err: "Invalid Password",
+          err: "Contrasenia invalida",
           user: {
             username: req.body.username,
             pass: req.body.password
           }
         });
       } else {
-        // Crear req.session.user y guardar campos id, token, nombre y nombre de usuario
+        // Crear req.session.user y guardar campos de usuario
         // La session se define por la existencia de req.session.user 
         req.session.user = { 
           token: user.createToken(), 
           _id: user._id, 
           name: user.name,
           username: user.username,
+          admin: user.admin,
           active: user.active
         };
-
+        console.log(user)
         console.log('\n**Login:\n**ACTIVIDAD DEl USUARIO: '+user.name);
         console.log('**USER ID: '+user._id);
         console.log('**TIME: '+Date.now());
@@ -105,6 +106,54 @@ exports.destroy = function(req, res){
   if (!req.session.user) {res.redirect('/'); return};
 
 	delete req.session.user;
-  res.redirect(req.session.redir||'/'); //redireccion a path anterior a login 
+  res.redirect('/'); //redireccion a path anterior a login 
+
+}
+
+// helper dinamico
+exports.dinamic = function(req, res, next){
+
+    // guardar path en session.redir para despues de login
+    if(!req.path.match(/\/login|\/logout/)){
+      req.session.redir = req.path;
+    }
+
+    models.User.find({}, function (err, users) {
+
+      if (err) {console.log('err db'); return};
+
+      if (users.length > 0 || req.path.match(/\/user/)) {
+
+        var usersLength = users.length;
+
+        //auto-logout
+        var time = Number( new Date().getTime() );
+        var timeOut = 4200; // 120 == 2 minutos
+        if (req.session.contador && req.session.user) {
+            if ((time - req.session.contador) > timeOut*1000) {
+                delete req.session.user;
+                res.redirect('/login');
+            }
+        }
+
+        req.session.usersLength = usersLength;
+        req.session.contador = time;
+        req.session.cart = models.Cart; //cart
+        
+        // hacer visible req.session en las vistas
+        res.locals.session = req.session;
+        console.log(req.session);
+        next();
+
+      }else{
+
+        res.render('user/new.jade', {
+          session: res.locals.session,
+          admin: true
+        });
+
+      }
+
+    });
 
 }

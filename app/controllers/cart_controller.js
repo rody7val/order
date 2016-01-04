@@ -10,17 +10,19 @@ exports.add_item = function(req, res, next){
 
   	models.Item.findOne({_id: itemId}, function(err, item) {
 
-  	    if (err) { next(new Error(err)); return } 
+      if (err) { res.json({success: false}) } 
 
-    	var cart = req.session.cart;
-    	cart.addItem(item);
-    	cart.save();
-    	res.json(cart);
+      var cart = req.session.cart;
+      cart.addItem(item);
+      cart.save();
+      cart.total = cart.getTotal();
+      req.session.cart = cart;
+      res.redirect('/item');
 
-  	});
+    });
 
-  }else{ 
-    next(new Error('Error cart')); return 
+  }else{
+    res.json({success: false});
   }
 
 }
@@ -38,12 +40,13 @@ exports.remove_item = function (req, res, next){
   if (itemId) {
   	models.Item.findOne({_id: itemId}, function(err, item) {
 
-  	    if (err) { next(new Error(err)); return } 
+  	  if (err) { next(new Error(err)); return } 
 
     	var cart = req.session.cart;
     	cart.removeItem(itemId);
     	cart.save();
-    	res.json(cart);
+      req.session.cart = cart;
+      res.redirect('/item');
 
   	});
   }else{ 

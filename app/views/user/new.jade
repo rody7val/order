@@ -1,13 +1,29 @@
-//- signup_form.jade
-extends ../layout.jade
-block title
-	title Signup
-block content
-	if err
-		#err_use.alert-danger
-			ul
-			each val, index in err
-				li= index + ': ' + val
-	form#signup(action='/user', method='post')
-		include _form_new.jade
-		input.btn.btn-success(type='submit', value='Crear mi nueva cuenta!')
+doctype html
+html(lang='en')
+	head
+		title Signup
+		link(href='/css/bootstrap.min.css', rel='stylesheet')
+		link(href='/css/signup.css', rel='stylesheet')
+		script(src='/js/jquery.min.js')
+		script(src='/js/bootstrap.min.js')
+		script(src='/js/spin.min.js')
+		script(src='/js/moment-with-locales.min.js')
+		script(src='/js/main.js')
+	body
+		header
+			a(href='/') < Cancelar
+		h1#signup_title Nuevo Usuario
+		#signup_content
+			if err
+				#err_signup.alert-danger
+					ul
+						each val, index in err
+							li= index + ': ' + val
+			form#load-img(action='/user/loadImg', method='post')
+				include _form_img.jade
+			form#signup(action='/user', method='post')
+				include _form_new.jade
+				input.btn.btn-success(type='submit', value='Crear mi nueva cuenta!')
+		#register
+			p Ya tienes una cuenta? 
+				a(href='/login') Inicia Sesion

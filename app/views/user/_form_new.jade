@@ -7,6 +7,9 @@ if err
 	input(name='user[email]',type='email',required,value="#{user.email}")
 	label Contrasenia
 	input(name='user[password]',type='password',required,value="#{user.password}")
+	input(name='user[imgPath]',type='hidden',id='imgPath',value='#{user.imgPath}')
+	if admin
+		input(name='user[admin]',type='hidden',value='true')
 else
 	label Nombre Completo
 	input(name='user[name]',type='text',required,placeholder="Franco Gomez")
@@ -16,5 +19,7 @@ else
 	input(name='user[email]',type='email',required,placeholder="fgomez@gmail.com")
 	label Contrasenia
 	input(name='user[password]',type='password',required,placeholder="franGomezDel85")
+	input(name='user[imgPath]',type='hidden',id='imgPath',value="/img/default-user.png")
+	if admin
+		input(name='user[admin]',type='hidden',value='true')
 br
-a(href='/') Cancelar

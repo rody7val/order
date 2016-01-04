@@ -1,11 +1,14 @@
 var multer = require('multer');
-var upload = multer({ dest: 'public/uploads/' })
+var upload_user = multer({ dest: 'public/uploads/user/' });
+var upload_item = multer({ dest: 'public/uploads/item/' });
+
 
 // Controllers
 var sessionController = require('../controllers/session_controller');
 var userController = require('../controllers/user_controller');
 var cartController = require('../controllers/cart_controller');
 var itemController = require('../controllers/item_controller');
+
 
 // API
 module.exports = function (app, express) {
@@ -28,13 +31,15 @@ module.exports = function (app, express) {
 
   // User
   api.get('/user/signup', userController.new);                                              //formulario crear usuario {get}
-  api.post('/user', userController.create);                                                 //crear usuario {post}
+  api.post('/user', userController.create);                                                  //crear usuario {post}
   api.get('/user', userController.index);                                                   //devolver usuarios {get}
   api.get('/user/:userId', userController.show);                                            //devolver usuario :userId {get}
   api.get('/user/:userId/edit', sessionController.loginRequired, userController.edit);      //formulario editar usuario :userId {get}
   api.put('/user/:userId', sessionController.loginRequired, userController.update);         //editar usuario :userId {put}
   api.delete('/user/:userId', sessionController.loginRequired, userController.delete);      //eliminar usuario :userId {delete}
   api.post('/user/:userId/active', sessionController.loginRequired, userController.active); //activar usuario :userId {post}
+  api.post('/user/loadImg', upload_user.single('user[img]'), userController.loadImg);       //cargar imagen {post}
+
 
   // Cart
   api.get('/cart/add_item', cartController.add_item);                                       //aniadir articulo a linea de pedido {get}
@@ -44,7 +49,7 @@ module.exports = function (app, express) {
 
   // Item
   api.get('/item/new', sessionController.loginRequired, itemController.new);                //formulario crear articulo {get}
-  api.post('/item', sessionController.loginRequired, upload.single('item[img]'), itemController.create);                //crear articulo {post}
+  api.post('/item', sessionController.loginRequired, upload_item.single('item[img]'), itemController.create);//crear articulo {post}
   api.get('/item', itemController.index);                                                   //devolver articulos {get}
   api.get('/item/:itemId', itemController.show);                                            //devolver articulo :itemId {get}
   api.get('/item/:itemId/edit', sessionController.loginRequired, itemController.edit);      //formulario editar articulo :itemId {get}

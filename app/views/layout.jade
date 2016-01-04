@@ -8,10 +8,10 @@ html(lang='en')
     link(href='/css/main.css', rel='stylesheet')
     if session.user
       script(type='text/javascript').
-        var token = '#{session.user.token}';
+        var session = '#{session}';
     else
       script(type='text/javascript').
-        var token = null;
+        var session = null;
     script(src='/js/jquery.min.js')
     script(src='/js/bootstrap.min.js')
     script(src='/js/main.js')
@@ -24,7 +24,8 @@ html(lang='en')
           nav.navbar.navbar-fixed-top
             div.navbar-header.pull-left
               a.navbar-brand(href='/') InsuMax
-              a.navbar-brand(href='/user') Usuarios
+              if session.user && session.user.admin
+                  a.navbar-brand(href='/user') Usuarios
               a.navbar-brand(href='/item') Productos
             div.navbar-header.pull-right
               if session.user
@@ -39,7 +40,7 @@ html(lang='en')
                   a#logoin(href='/user/signup') Signup
               //- myCart
               if session.cart
-                include cart/index.jade
+                include cart/cart.jade
               else
                 span.navbar-brand
                   p.alert-danger Error cart!

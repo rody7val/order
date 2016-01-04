@@ -1,0 +1,11 @@
+figure
+	if err
+		img#img-signup.img-responsive.img-circle(
+		src='#{user.imgPath}'
+		alt='user-image')
+		input#img-input(name='user[img]',type='file')
+	else
+		img#img-signup.img-responsive.img-circle(
+		src='/img/default-user.png'
+		alt='user-image')
+		input#img-input(name='user[img]',type='file')

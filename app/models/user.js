@@ -12,7 +12,10 @@ var UserSchema = new Schema({
     username: {type: String, required: true, unique: true},
     email: {type: String, required: true, index: {unique: true}},
     password: {type: String, required: true, select: false},
+    img: {type: Buffer, contentType: String},
+    imgPath: {type: String, default: '/img/default-user.png'},
     active: {type: Boolean, default: false},
+    admin: {type: Boolean, default: false},
     created: {type: Date, default: Date.now}
 });
 

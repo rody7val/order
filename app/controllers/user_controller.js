@@ -4,10 +4,12 @@ var models = require('../models/models');
 // Cargar parametro :userId
 exports.load = function(req, res, next, userId){
 
-  models.User.findOne({_id: userId}, function(err, user){
+  models.User.findOne({
+    _id: userId
+  }).select('name username email active admin imgPath').exec(function(err, user){
 
     if (err) { next(new Error(err)); return } 
-
+    // console.log(user)
     req.user = user;
     next();
 
@@ -17,6 +19,8 @@ exports.load = function(req, res, next, userId){
 
 // Mostrar todos los usuarios
 exports.index = function (req, res, next) {
+
+  if (!req.session.user) {res.redirect('/'); return};
 
   models.User.find({}, function (err, users) {
 
@@ -33,8 +37,8 @@ exports.index = function (req, res, next) {
 
 // Formulario nuevo Usuario
 exports.new = function(req, res){
-  
-  if (req.session.user) {res.redirect(req.session.redir||'/'); return};
+
+  if (req.session.user) {res.redirect('/'); return};
 
   var user = models.User;
 
@@ -46,11 +50,18 @@ exports.new = function(req, res){
 }
 
 // Guardar nuevo Usuario en la BD
-exports.create = function(req, res){
+exports.create = function(req, res, next){
 
-  if (req.session.user) {res.redirect(req.session.redir||'/'); return};
+  if (req.session.user) {res.redirect('/'); return};
 
   var user = models.User(req.body.user);
+
+  if (user.admin) {
+    user.active = true;
+  }
+
+  console.log('\n**user');
+  console.log(user);
 
   user.save(function (err) {
     if (err) {
@@ -60,11 +71,24 @@ exports.create = function(req, res){
         err: err.errors // errores
       });
     }else{
-      res.redirect('/user');
+      res.redirect('/user/'+user._id);
     }
   });
 
 }
+
+exports.loadImg = function(req, res, next){
+
+  if (req.file) {
+    console.log(req.file);
+    res.json({success: true, path: req.file.path})
+  }else{
+    console.log(req.file);
+    res.json({success: false})
+  }
+
+}
+
 
 // Mostrar Usuario
 exports.show = function(req, res){
@@ -125,15 +149,29 @@ exports.delete = function(req, res, next){
 
   var user = req.user;
 
-  if (req.session.user._id != user._id) {res.redirect('/'); return};
+  if (req.session.user.admin) { //si existe admin
+
+    user.remove(function(err){
+      if (err) { next(new Error(err)) }
+      if (req.session.user._id == user._id) {
+        delete req.session.user
+      };
+      res.redirect('/user');
+      return;
+    });
+
+  } else if (req.session.user._id != user._id) { //si los id son distintos
+
+    res.redirect('/'); 
+    return;
+
+  }
 
   user.remove(function(err){
-    if (err) {
-      next(new Error(err));
-    }else{
+    if (err) { next(new Error(err)) }
       delete req.session.user;
       res.redirect('/user');
-    }
+      return;
   });
 
 }

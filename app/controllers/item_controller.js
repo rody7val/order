@@ -7,7 +7,7 @@ exports.load = function(req, res, next, itemId){
   models.Item.findOne({_id: itemId}, function(err, item){
 
     if (err) { next(new Error(err)); return } 
-
+    // console.log(item)
     req.item = item;
     next();
 
@@ -51,9 +51,13 @@ exports.create = function(req, res, next){
 
     if (errUser) { next(new Error(errUser)); return } 
 
-    var post = req.body.item;
-    var imgPath = req.file.path
+    if (req.file) {
+      console.log('\n**img');
+      console.log(req.file);
+      var imgPath = req.file.path 
+    }
 
+    var post = req.body.item;
     var item = models.Item({ 
       name: post.name,
       desc: post.desc,
@@ -62,6 +66,10 @@ exports.create = function(req, res, next){
       imgPath: imgPath.split('public')[1],
       userId: user._id
     });
+    
+    console.log('\n**item');
+    console.log(item);
+
     item.save(function (err) {   // guardar articulo
       if (err) {
         res.render('item/new.jade', {

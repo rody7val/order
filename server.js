@@ -1,12 +1,12 @@
-var express = require("express");
+var sessionController = require('./app/controllers/session_controller.js');
+var express = require('express');
 var favicon = require('serve-favicon');
-var bodyParser = require("body-parser");
+var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
 var session = require('express-session');
-var models = require('./app/models/models.js');
 var methodOverride  = require('method-override');
-var morgan = require("morgan");
-var config = require("./config");
+var morgan = require('morgan');
+var config = require('./config');
 var cors = require('cors');
 var path = require('path');
 var app = express();
@@ -32,30 +32,7 @@ app.use(methodOverride('_method'));
 app.use(express.static(path.join(__dirname, 'public')));
 
 // helper dinamico
-app.use(function(req, res, next){
-    // guardar path en session.redir para despues de login
-    if(!req.path.match(/\/login|\/logout/)){
-      req.session.redir = req.path;
-    }
-
-    //auto-logout
-    var time = Number( new Date().getTime() );
-    var timeOut = 4200; // 120 == 2 minutos
-    if (req.session.contador && req.session.user) {
-        if ((time - req.session.contador) > timeOut*1000) {
-            delete req.session.user;
-            res.redirect('/login');
-        }
-    }
-
-    req.session.contador = time;
-    req.session.cart = models.Cart; //cart
-
-    // hacer visible req.session en las vistas
-    res.locals.session = req.session;
-    console.log(req.session);
-    next();
-})
+app.use(sessionController.dinamic);
 
 var api = require('./app/routes/api')(app, express);
 app.use('/', api);

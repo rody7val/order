@@ -14,10 +14,11 @@ block content
 							src='#{val.imgPath}'
 							alt='#{val.name}')
 							div.caption
-								h2 #{val.name}
-								a.btn.btn-primary(
-								href='/cart/add_item?item=#{val._id}') Añadir al carro
-								if session.user
+								h3 #{val.name}
+								a.add_cart.btn.btn-primary(
+								href="/cart/add_item?item=#{val._id}"
+								) Añadir al carro
+								if session.user && session.user.admin
 									span
 										//-borrar
 										form(
@@ -30,6 +31,6 @@ block content
 											) Borrar
 			else
 				p Aun no hay productos disponibles.
-			if session.user
+			if session.user && session.user.admin
 				a.btn.btn-primary(
 				href='/item/new') Cargar nuevo producto
