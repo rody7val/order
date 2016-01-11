@@ -110,50 +110,47 @@ exports.destroy = function(req, res){
 
 }
 
-// helper dinamico
+// Helper dinamico
 exports.dinamic = function(req, res, next){
+
+  models.User.find({}, function (err, users) {
+
+    if (err) { console.log('err db helper dinamico'); return }
 
     // guardar path en session.redir para despues de login
     if(!req.path.match(/\/login|\/logout/)){
       req.session.redir = req.path;
     }
 
-    models.User.find({}, function (err, users) {
+    var usersLength = users.length;
+    var time = Number( new Date().getTime() );
+    var timeOut = 4200; // 120 == 2 minutos
 
-      if (err) {console.log('err db'); return};
+    req.session.usersLength = usersLength;
+    req.session.cart = models.Cart; //cart
+    req.session.contador = time;
+    // hacer visible req.session en las vistas
+    res.locals.session = req.session;
 
-      if (users.length > 0 || req.path.match(/\/user/)) {
-
-        var usersLength = users.length;
-
-        //auto-logout
-        var time = Number( new Date().getTime() );
-        var timeOut = 4200; // 120 == 2 minutos
-        if (req.session.contador && req.session.user) {
-            if ((time - req.session.contador) > timeOut*1000) {
-                delete req.session.user;
-                res.redirect('/login');
-            }
+    if ( usersLength > 0 || ( req.path.match(/\/user/) && req.method == 'POST' ) ) {
+      //auto-logout
+      if (req.session.contador && req.session.user) {
+        if ((time - req.session.contador) > timeOut*1000) {
+          delete req.session.user;
+          res.redirect('/login');
         }
-
-        req.session.usersLength = usersLength;
-        req.session.contador = time;
-        req.session.cart = models.Cart; //cart
-        
-        // hacer visible req.session en las vistas
-        res.locals.session = req.session;
-        console.log(req.session);
-        next();
-
-      }else{
-
-        res.render('user/new.jade', {
-          session: res.locals.session,
-          admin: true
-        });
-
       }
+      console.log(req.session);
+      next();
+      return;
+    }else{
+      console.log(usersLength);
+      res.render('user/new.jade', {
+        session: res.locals.session,
+        admin: true
+      });
+    }
 
-    });
+  });
 
 }

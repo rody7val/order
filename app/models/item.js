@@ -6,6 +6,7 @@ var ItemSchema = new Schema({
     name: {type: String, index: true, required: true},
     desc: String,
     price: Number,
+    qty: Number,
     category: {type: String, index: true, required: true},
     img: {type: Buffer, contentType: String},
     imgPath: {type: String, default: '/img/default-item.png'},

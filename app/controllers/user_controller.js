@@ -1,6 +1,5 @@
 var models = require('../models/models');
 
-
 // Cargar parametro :userId
 exports.load = function(req, res, next, userId){
 
@@ -59,9 +58,6 @@ exports.create = function(req, res, next){
   if (user.admin) {
     user.active = true;
   }
-
-  console.log('\n**user');
-  console.log(user);
 
   user.save(function (err) {
     if (err) {

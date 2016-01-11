@@ -1,13 +1,10 @@
-span.navbar-brand
-	a#button_cart.btn.btn-primary.navbar-btn(href='#', onclick='view_hide("cart")')
-		span#item #{session.cart.items.length} 
-		span.glyphicon.glyphicon-shopping-cart(aria-hidden='true')
+#cart_content
 	#cart.popover.fade.bottom.in
 		div.arrow(style='left:50%')
 		table
 			if session.cart.items.length
 				each val, index in session.cart.items
-					tr(tr-hover='close')
+					tr
 						td: strong.item_name #{(val.name.length>13)?val.name.substring(0,13)+'..':val.name}
 						td: span.item_price $ #{val.price}
 						td: strong.por x
@@ -19,9 +16,10 @@ span.navbar-brand
 				table
 					tr 
 						td.text-right
-							p: strong Total: 
+							p: strong Total:&nbsp
 						td.text-left
-							p.item_price $ #{session.cart.total}
+							- var price = session.cart.total.toFixed(2).toString()
+							p.item_price #{price}
 			else
 				tr
 					td: p.text-center Carro vacio.

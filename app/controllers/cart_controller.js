@@ -4,7 +4,7 @@ var models = require('../models/models');
 // Agregar articulo a la linea de pedidos
 exports.add_item = function(req, res, next){
 
-  var itemId = req.param('item');
+  var itemId = req.param('item_id');
 
   if (itemId) {
 
@@ -15,9 +15,11 @@ exports.add_item = function(req, res, next){
       var cart = req.session.cart;
       cart.addItem(item);
       cart.save();
-      cart.total = cart.getTotal();
+      var total = cart.getTotal();
+      cart.total = total;
       req.session.cart = cart;
-      res.redirect('/item');
+      // res.redirect('/item');
+      res.json({success: true, cart: cart, total: total});
 
     });
 

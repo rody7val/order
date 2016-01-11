@@ -2,13 +2,11 @@ var multer = require('multer');
 var upload_user = multer({ dest: 'public/uploads/user/' });
 var upload_item = multer({ dest: 'public/uploads/item/' });
 
-
 // Controllers
 var sessionController = require('../controllers/session_controller');
 var userController = require('../controllers/user_controller');
 var cartController = require('../controllers/cart_controller');
 var itemController = require('../controllers/item_controller');
-
 
 // API
 module.exports = function (app, express) {
@@ -30,8 +28,9 @@ module.exports = function (app, express) {
   api.get('/logout', sessionController.destroy);                                            //borrar token {post}
 
   // User
+
   api.get('/user/signup', userController.new);                                              //formulario crear usuario {get}
-  api.post('/user', userController.create);                                                  //crear usuario {post}
+  api.post('/user', userController.create);                                                 //crear usuario {post}
   api.get('/user', userController.index);                                                   //devolver usuarios {get}
   api.get('/user/:userId', userController.show);                                            //devolver usuario :userId {get}
   api.get('/user/:userId/edit', sessionController.loginRequired, userController.edit);      //formulario editar usuario :userId {get}
@@ -39,7 +38,6 @@ module.exports = function (app, express) {
   api.delete('/user/:userId', sessionController.loginRequired, userController.delete);      //eliminar usuario :userId {delete}
   api.post('/user/:userId/active', sessionController.loginRequired, userController.active); //activar usuario :userId {post}
   api.post('/user/loadImg', upload_user.single('user[img]'), userController.loadImg);       //cargar imagen {post}
-
 
   // Cart
   api.get('/cart/add_item', cartController.add_item);                                       //aniadir articulo a linea de pedido {get}

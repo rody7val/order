@@ -23,7 +23,7 @@ html(lang='en')
         header
           nav.navbar.navbar-fixed-top
             div.navbar-header.pull-left
-              a.navbar-brand(href='/') InsuMax
+              a.navbar-brand(href='/') Home
               if session.user && session.user.admin
                   a.navbar-brand(href='/user') Usuarios
               a.navbar-brand(href='/item') Productos
@@ -40,9 +40,14 @@ html(lang='en')
                   a#logoin(href='/user/signup') Signup
               //- myCart
               if session.cart
-                include cart/cart.jade
+                span.navbar-brand
+                  a#button_cart.btn.btn-primary.navbar-btn(href='#', onclick='view_hide("cart_content")')
+                    span#item #{session.cart.items.length}
+                    span.glyphicon.glyphicon-shopping-cart(aria-hidden='true')
               else
                 span.navbar-brand
                   p.alert-danger Error cart!
         #content.container
           block content
+  if session.cart
+    include cart/cart.jade

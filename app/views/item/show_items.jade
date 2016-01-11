@@ -15,9 +15,7 @@ block content
 							alt='#{val.name}')
 							div.caption
 								h3 #{val.name}
-								a.add_cart.btn.btn-primary(
-								href="/cart/add_item?item=#{val._id}"
-								) Añadir al carro
+								button.add_cart.btn.btn-primary(data-item='#{val._id}') Añadir al carro
 								if session.user && session.user.admin
 									span
 										//-borrar
