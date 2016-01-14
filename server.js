@@ -6,7 +6,6 @@ var cookieParser = require('cookie-parser');
 var session = require('express-session');
 var methodOverride  = require('method-override');
 var morgan = require('morgan');
-var config = require('./config');
 var cors = require('cors');
 var path = require('path');
 var app = express();
@@ -43,11 +42,5 @@ app.use(function(err, req, res, next){
   res.render('error', err);
 })
 
-app.listen(config.port, function (err) {
-    if (err) {
-        console.log(err);
-    } else {
-        console.log("Listening on port "+config.port);
-    }
-});
+module.exports = app;
 

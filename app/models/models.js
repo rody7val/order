@@ -7,7 +7,7 @@ var User = require('./user');
 var Item = require('./item');
 
 // Conectar con MongoDB usando Mongoose.
-mongoose.connect(config.db, function (err) {
+mongoose.connect(config.db.localhost, function (err) {
     if (err) {
         console.error(err.name+': '+err.message);
     } else {

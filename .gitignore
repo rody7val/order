@@ -3,3 +3,4 @@ scratch
 public
 public/uploads
 config.*
+npm-debug.*
